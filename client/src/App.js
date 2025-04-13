@@ -13,6 +13,8 @@ import Friends from "./pages/Friends";
 import Daily from "./pages/Daily";
 import Leaderboard from "./pages/Leaderboard";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 
 // function App() {
 //   return (
@@ -27,18 +29,46 @@ function App() {
   return (
     <Router>
       <div className="container-fluid" style={{ paddingBottom: "70px" }}>
-        {/* 
-          The inline style (or you can create a CSS class)
-          adds bottom padding so that the content won't hide behind
-          the fixed bottom navbar.
-        */}
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/signinup" element={<SignInUp />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/friends" element={<Friends />} />
-          <Route path="/daily" element={<Daily />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
+          
+          {/* Protected routes */}
+          <Route 
+            path="/home" 
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/friends" 
+            element={
+              <ProtectedRoute>
+                <Friends />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/daily" 
+            element={
+              <ProtectedRoute>
+                <Daily />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/leaderboard" 
+            element={
+              <ProtectedRoute>
+                <Leaderboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Fallback route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
