@@ -1,14 +1,22 @@
 import axios from "axios";
 import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext"; // Ensure you have an AuthContext set up
+import { updateUserPoints } from "../services/pointsService";
 
 function TrashInput() {
   const [item, setItem] = useState("");
   const [result, setResult] = useState(null);
+  const { currentUser } = useAuth(); // Get the current user's UID
 
   const submitItem = async () => {
     try {
       const res = await axios.post("http://localhost:5000/classify", { item });
       setResult(res.data);
+      
+      // If the user is signed in, update their points in Firestore.
+      if (currentUser) {
+        await updateUserPoints(currentUser.uid, res.data.score);
+      }
     } catch (error) {
       console.error("Error classifying item:", error);
     }
